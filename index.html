@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON Form</title>
+    <title>JSON Form Builder</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -11,11 +11,33 @@
             background-color: #121212;
             color: #E5E5E5;
             font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
         }
         .container {
             max-width: 1200px;
-            margin: auto;
-            padding: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .banner {
+            width: 100%;
+            height: 100px;
+            background-color: #1C1C1C;
+            border: 1px solid #2C2C2C;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .banner img {
+            width: 100%;
+            height: auto;
         }
         .form-section, .json-preview {
             background-color: #1C1C1C;
@@ -23,6 +45,7 @@
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;
+            flex: 1;
         }
         .input-field {
             background-color: #2C2C2C;
@@ -61,133 +84,150 @@
         .collapsible-content.open {
             display: block;
         }
+        .github-link {
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+        }
+        .github-link img {
+            width: 32px;
+            height: 32px;
+        }
     </style>
 </head>
 <body>
-    <div class="container flex h-screen">
-        <!-- Form Section -->
-        <div class="w-1/2 p-6 form-section overflow-auto">
-            <h1 class="text-2xl font-bold mb-4">Andromeda NFT JSON Builder</h1>
-            <p class="text-gray-400 mb-4">Toggle down whichever type of JSON you wish to generate.</p>
-
-            <!-- Individual cw721 JSON Metadata Form -->
-            <h2 class="text-xl font-bold mb-2 collapsible">Individual cw721 JSON Metadata JSON file</h2>
-            <form id="jsonForm" class="collapsible-content">
-                <div class="mb-4">
-                    <label class="block text-gray-400">Name</label>
-                    <input type="text" id="name" name="name" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter NFT name">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-400">Description</label>
-                    <textarea id="description" name="description" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter NFT description"></textarea>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-400">Image URL</label>
-                    <input type="text" id="image" name="image" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter image URL">
-                </div>
-                <div id="attributesContainer" class="mb-4">
-                    <label class="block text-gray-400">Attributes</label>
-                    <div class="mb-2">
-                        <input type="text" id="trait_type_1" name="trait_type_1" placeholder="Trait Type 1" class="w-full p-2 border border-gray-300 rounded input-field mb-2">
-                        <input type="text" id="value_1" name="value_1" placeholder="Value 1" class="w-full p-2 border border-gray-300 rounded input-field">
-                    </div>
-                    <div class="divider"></div>
-                    <div class="mb-2">
-                        <input type="text" id="trait_type_2" name="trait_type_2" placeholder="Trait Type 2" class="w-full p-2 border border-gray-300 rounded input-field mb-2">
-                        <input type="text" id="value_2" name="value_2" placeholder="Value 2" class="w-full p-2 border border-gray-300 rounded input-field">
-                    </div>
-                    <div class="divider"></div>
-                </div>
-                <button type="button" id="addAttributeButton" class="mt-4 p-2 rounded button text-white">Add Attribute</button>
-                <button type="button" id="clearAllDataButton" class="mt-4 p-2 rounded button text-white">Clear All Data</button>
-            </form>
-            
-            <div class="divider"></div>
-
-            <!-- Crowdfund cw721 Batch Mint Form -->
-            <h2 class="text-xl font-bold mb-2 collapsible">Crowdfund cw721 Batch Mint</h2>
-            <form id="crowdfundForm" class="collapsible-content">
-                <div id="tokenFields">
-                    <!-- Token 1 should be open initially -->
-                    <div class="mb-4 p-4 border border-gray-300 rounded">
-                        <h3 class="text-lg font-bold mb-2">Token 1</h3>
-                        <div class="mb-4">
-                            <label class="block text-gray-400">Publisher</label>
-                            <input type="text" id="publisher_1" name="publisher_1" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter publisher information">
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-400">Token ID</label>
-                            <input type="text" id="token_id_1" name="token_id_1" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter Token ID 1">
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-400">Token URI</label>
-                            <input type="text" id="token_uri_1" name="token_uri_1" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter Token URI 1">
-                        </div>
-                    </div>
-                </div>
-
-                <p class="text-gray-400 mb-4">Click the button below to add fields for up to 10 tokens.</p>
-                <button type="button" id="addToken" class="mt-4 p-2 rounded button text-white">Add Token</button>
-                <button type="button" id="clearAllCrowdfundDataButton" class="mt-4 p-2 rounded button text-white">Clear All Data</button>
-            </form>
-
-            <div class="divider"></div>
-
-            <!-- Standard cw721 ADO Batch Mint Form -->
-            <h2 class="text-xl font-bold mb-2 collapsible">Standard cw721 ADO Batch Mint</h2>
-            <form id="standardBatchMintForm" class="collapsible-content">
-                <div id="standardTokenFields">
-                    <!-- Token 1 should be open initially -->
-                    <div class="mb-4 p-4 border border-gray-300 rounded">
-                        <h3 class="text-lg font-bold mb-2">Token 1</h3>
-                        <div class="mb-4">
-                            <label class="block text-gray-400">Token ID</label>
-                            <input type="text" id="standard_token_id_1" name="standard_token_id_1" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter Token ID 1">
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-400">Owner</label>
-                            <input type="text" id="standard_owner_1" name="standard_owner_1" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter Owner Address 1">
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-400">Token URI</label>
-                            <input type="text" id="standard_token_uri_1" name="standard_token_uri_1" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter Token URI 1">
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-400">Publisher</label>
-                            <input type="text" id="standard_publisher_1" name="standard_publisher_1" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter Publisher">
-                        </div>
-                    </div>
-                </div>
-
-                <p class="text-gray-400 mb-4">Click the button below to add fields for up to 10 tokens.</p>
-                <button type="button" id="addStandardToken" class="mt-4 p-2 rounded button text-white">Add Token</button>
-                <button type="button" id="clearAllStandardDataButton" class="mt-4 p-2 rounded button text-white">Clear All Data</button>
-            </form>
+    <div class="container">
+        <div class="banner">
+            <img src="banner.jpg" alt="Banner">
         </div>
+        <div class="flex w-full">
+            <!-- Form Section -->
+            <div class="w-1/2 p-6 form-section">
+                <h1 class="text-2xl font-bold mb-4">Andromeda NFT JSON Builder</h1>
+                <p class="text-gray-400 mb-4">Toggle down whichever type of JSON you wish to generate.</p>
 
-        <!-- JSON Preview Section -->
-        <div class="w-1/2 p-6 json-preview overflow-auto">
-            <h1 class="text-2xl font-bold mb-4">JSON Preview</h1>
-            <p class="json-preview-note mb-4">All JSON files generated will be shown in this column.</p>
-            <h2 class="text-xl font-bold mb-2 collapsible">Individual cw721 JSON Metadata JSON file</h2>
-            <div class="collapsible-content">
-                <pre id="jsonPreview" class="p-4 border border-gray-300 rounded overflow-auto"></pre>
-                <button id="downloadJson" class="mt-4 p-2 rounded button text-white">Download Individual JSON</button>
+                <!-- Individual cw721 JSON Metadata Form -->
+                <h2 class="text-xl font-bold mb-2 collapsible">Individual cw721 JSON Metadata JSON file</h2>
+                <form id="jsonForm" class="collapsible-content">
+                    <div class="mb-4">
+                        <label class="block text-gray-400">Name</label>
+                        <input type="text" id="name" name="name" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter NFT name">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-400">Description</label>
+                        <textarea id="description" name="description" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter NFT description"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-400">Image URL</label>
+                        <input type="text" id="image" name="image" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter image URL">
+                    </div>
+                    <div id="attributesContainer" class="mb-4">
+                        <label class="block text-gray-400">Attributes</label>
+                        <div class="mb-2">
+                            <input type="text" id="trait_type_1" name="trait_type_1" placeholder="Trait Type 1" class="w-full p-2 border border-gray-300 rounded input-field mb-2">
+                            <input type="text" id="value_1" name="value_1" placeholder="Value 1" class="w-full p-2 border border-gray-300 rounded input-field">
+                        </div>
+                        <div class="divider"></div>
+                        <div class="mb-2">
+                            <input type="text" id="trait_type_2" name="trait_type_2" placeholder="Trait Type 2" class="w-full p-2 border border-gray-300 rounded input-field mb-2">
+                            <input type="text" id="value_2" name="value_2" placeholder="Value 2" class="w-full p-2 border border-gray-300 rounded input-field">
+                        </div>
+                        <div class="divider"></div>
+                    </div>
+                    <button type="button" id="addAttributeButton" class="mt-4 p-2 rounded button text-white">Add Attribute</button>
+                    <button type="button" id="clearAllDataButton" class="mt-4 p-2 rounded button text-white">Clear All Data</button>
+                </form>
+                
+                <div class="divider"></div>
+
+                <!-- Crowdfund cw721 Batch Mint Form -->
+                <h2 class="text-xl font-bold mb-2 collapsible">Crowdfund cw721 Batch Mint</h2>
+                <form id="crowdfundForm" class="collapsible-content">
+                    <div id="tokenFields">
+                        <!-- Token 1 should be open initially -->
+                        <div class="mb-4 p-4 border border-gray-300 rounded">
+                            <h3 class="text-lg font-bold mb-2">Token 1</h3>
+                            <div class="mb-4">
+                                <label class="block text-gray-400">Publisher</label>
+                                <input type="text" id="publisher_1" name="publisher_1" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter publisher information">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-400">Token ID</label>
+                                <input type="text" id="token_id_1" name="token_id_1" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter Token ID 1">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-400">Token URI</label>
+                                <input type="text" id="token_uri_1" name="token_uri_1" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter Token URI 1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-400 mb-4">Click the button below to add fields for up to 10 tokens.</p>
+                    <button type="button" id="addToken" class="mt-4 p-2 rounded button text-white">Add Token</button>
+                    <button type="button" id="clearAllCrowdfundDataButton" class="mt-4 p-2 rounded button text-white">Clear All Data</button>
+                </form>
+
+                <div class="divider"></div>
+
+                <!-- Standard cw721 ADO Batch Mint Form -->
+                <h2 class="text-xl font-bold mb-2 collapsible">Standard cw721 ADO Batch Mint</h2>
+                <form id="standardBatchMintForm" class="collapsible-content">
+                    <div id="standardTokenFields">
+                        <!-- Token 1 should be open initially -->
+                        <div class="mb-4 p-4 border border-gray-300 rounded">
+                            <h3 class="text-lg font-bold mb-2">Token 1</h3>
+                            <div class="mb-4">
+                                <label class="block text-gray-400">Token ID</label>
+                                <input type="text" id="standard_token_id_1" name="standard_token_id_1" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter Token ID 1">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-400">Owner</label>
+                                <input type="text" id="standard_owner_1" name="standard_owner_1" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter Owner Address 1">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-400">Token URI</label>
+                                <input type="text" id="standard_token_uri_1" name="standard_token_uri_1" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter Token URI 1">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-400">Publisher</label>
+                                <input type="text" id="standard_publisher_1" name="standard_publisher_1" class="w-full p-2 border border-gray-300 rounded input-field" placeholder="Enter Publisher">
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-400 mb-4">Click the button below to add fields for up to 10 tokens.</p>
+                    <button type="button" id="addStandardToken" class="mt-4 p-2 rounded button text-white">Add Token</button>
+                    <button type="button" id="clearAllStandardDataButton" class="mt-4 p-2 rounded button text-white">Clear All Data</button>
+                </form>
             </div>
-            <div class="divider"></div>
-            <h2 class="text-xl font-bold mb-2 collapsible">Crowdfund cw721 Batch Mint</h2>
-            <div class="collapsible-content">
-                <pre id="jsonPreviewCrowdfund" class="p-4 border border-gray-300 rounded overflow-auto"></pre>
-                <button id="downloadJsonCrowdfund" class="mt-4 p-2 rounded button text-white">Download Crowdfund Batch Mint JSON</button>
-            </div>
-            <div class="divider"></div>
-            <h2 class="text-xl font-bold mb-2 collapsible">Standard cw721 ADO Batch Mint</h2>
-            <div class="collapsible-content">
-                <pre id="jsonPreviewStandardBatchMint" class="p-4 border border-gray-300 rounded overflow-auto"></pre>
-                <button id="downloadJsonStandardBatchMint" class="mt-4 p-2 rounded button text-white">Download Standard Batch Mint JSON</button>
+
+            <!-- JSON Preview Section -->
+            <div class="w-1/2 p-6 json-preview">
+                <h1 class="text-2xl font-bold mb-4">JSON Preview</h1>
+                <p class="json-preview-note mb-4">All JSON files generated will be shown in this column.</p>
+                <h2 class="text-xl font-bold mb-2 collapsible">Individual cw721 JSON Metadata JSON file</h2>
+                <div class="collapsible-content">
+                    <pre id="jsonPreview" class="p-4 border border-gray-300 rounded overflow-auto"></pre>
+                    <button id="downloadJson" class="mt-4 p-2 rounded button text-white">Download Individual JSON</button>
+                </div>
+                <div class="divider"></div>
+                <h2 class="text-xl font-bold mb-2 collapsible">Crowdfund cw721 Batch Mint</h2>
+                <div class="collapsible-content">
+                    <pre id="jsonPreviewCrowdfund" class="p-4 border border-gray-300 rounded overflow-auto"></pre>
+                    <button id="downloadJsonCrowdfund" class="mt-4 p-2 rounded button text-white">Download Crowdfund Batch Mint JSON</button>
+                </div>
+                <div class="divider"></div>
+                <h2 class="text-xl font-bold mb-2 collapsible">Standard cw721 ADO Batch Mint</h2>
+                <div class="collapsible-content">
+                    <pre id="jsonPreviewStandardBatchMint" class="p-4 border border-gray-300 rounded overflow-auto"></pre>
+                    <button id="downloadJsonStandardBatchMint" class="mt-4 p-2 rounded button text-white">Download Standard Batch Mint JSON</button>
+                </div>
             </div>
         </div>
     </div>
+    <a href="https://github.com/MyronKoch-dev/JSON-form-builder" class="github-link">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub link">
+    </a>
     <script src="script.js"></script>
 </body>
 </html>
