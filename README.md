@@ -4,7 +4,7 @@
 
 
  
-Try the demo: https://myronkoch-dev.github.io/JSON-form-builder/
+Try the demo: https://myronkoch-dev.github.io/Andromeda-JSON-form-builder/
 
 
 ## Overview
